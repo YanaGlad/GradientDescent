@@ -36,5 +36,8 @@ if not right_flag:
     plt.plot(grid, primed_poly(grid), label='True derivative')
     plt.plot(grid, approx_deriv(grid), label='Counted derivative')
     plt.legend()
+    plt.show()
 
 print(str(right_flag))
+
+
