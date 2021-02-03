@@ -84,7 +84,7 @@ def test_convergence_1d(grad_descent, test_cases, tol=1e-2, axes=None, grid=None
 
             ax.axvline(x_steps[-1], 0, linestyle="--", c="xkcd:tangerine",
                        label=f"estimate = {np.round(x_steps[-1], 3)}")
-            ax.legend(fontsize = 16)
+            ax.legend(fontsize=16)
 
             if abs(answer - res_point) > tol or np.isnan(res_point):
                 debug_log.append(
@@ -99,35 +99,33 @@ def test_convergence_1d(grad_descent, test_cases, tol=1e-2, axes=None, grid=None
 
 test_cases = {
     "square": {
-        "func" : lambda x: x * x,
-        "deriv" : lambda x: 2 * x,
-        "start" : 2,
-        "answer" : 0.0
+        "func": lambda x: x * x,
+        "deriv": lambda x: 2 * x,
+        "start": 2,
+        "answer": 0.0
     },
     "module": {
-        "func" : lambda x: abs(x),
-        "deriv" : lambda x: 1 if x > 0 else -1,
-        "start" : 2,
-        "answer" : 0.0
+        "func": lambda x: abs(x),
+        "deriv": lambda x: 1 if x > 0 else -1,
+        "start": 2,
+        "answer": 0.0
     },
     "third_power": {
-        "func" : lambda x: abs((x - 1)**3),
-        "deriv" : lambda x: 3 * (x - 1)**2 * np.sign(x-1),
-        "start" : -1,
-        "answer" : 1.0
+        "func": lambda x: abs((x - 1) ** 3),
+        "deriv": lambda x: 3 * (x - 1) ** 2 * np.sign(x - 1),
+        "start": -1,
+        "answer": 1.0
     },
     "ln_x2_1": {
-        "func" : lambda x: np.log((x + 1)**2 + 1),
-        "deriv" : lambda x: 2 * (x + 1) / (x**2 +1),
-        "start" : 1,
-        "answer" : -1.0
+        "func": lambda x: np.log((x + 1) ** 2 + 1),
+        "deriv": lambda x: 2 * (x + 1) / (x ** 2 + 1),
+        "start": 1,
+        "answer": -1.0
     }
 }
 
-
-
 tol = 1e-2
-fig, axes = plt.subplots(2,2, figsize=(14, 12))
+fig, axes = plt.subplots(2, 2, figsize=(14, 12))
 fig.suptitle("Grad descent ver 1", fontweight="bold", fontsize=20)
 grid = np.linspace(-2, 2, 100)
 
@@ -141,4 +139,3 @@ if not is_correct:
     print("Incorrect")
     for log_entry in debug_log:
         print(log_entry)
-
