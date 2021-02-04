@@ -35,10 +35,11 @@ def grad_descent_2d(func, low, high, callback=None):
 
     return best
 
-#Testing
+
+# Testing
 def plot_convergence_2d(func, steps, ax,
-                        xlim, ylim, cmap = "viridis", title = ""):
-    ax.set_title(title, fontsize = 20, fontweight = "bold")
+                        xlim, ylim, cmap="viridis", title=""):
+    ax.set_title(title, fontsize=20, fontweight="bold")
 
     xrange = np.linspace(*xlim, 100)
     yrange = np.linspace(*ylim, 100)
@@ -46,3 +47,17 @@ def plot_convergence_2d(func, steps, ax,
     grid = np.meshgrid(xrange, yrange)
 
     X, Y = grid
+    fvalues = func(np.dstack(grid).reshape(-1, 2)).reshape((xrange.size, yrange.size))
+
+    ax.pcolormesh(xrange, yrange, fvalues, cmap=cmap, alpha=0.8)
+    CS = ax.countour(xrange, yrange, fvalues)
+    ax.clabel(CS, CS.levels, inline=True)
+
+    arrow_kwargs = dict(linestyle="--", color="black", alpha=0.8)
+    for i, _ in enumerate(steps):
+        if i + 1 < len(steps):
+            ax.arrow(
+                *steps[i],
+                *(steps[i + 1] - steps[i]),
+                **arrow_kwargs
+            )
