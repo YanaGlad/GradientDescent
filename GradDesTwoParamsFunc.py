@@ -36,3 +36,13 @@ def grad_descent_2d(func, low, high, callback=None):
     return best
 
 #Testing
+def plot_convergence_2d(func, steps, ax,
+                        xlim, ylim, cmap = "viridis", title = ""):
+    ax.set_title(title, fontsize = 20, fontweight = "bold")
+
+    xrange = np.linspace(*xlim, 100)
+    yrange = np.linspace(*ylim, 100)
+
+    grid = np.meshgrid(xrange, yrange)
+
+    X, Y = grid
