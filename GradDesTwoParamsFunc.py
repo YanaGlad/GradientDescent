@@ -41,20 +41,19 @@ def grad_descent_2d(func, low, high, callback=None):
 
 
 # Testing
-def plot_convergence_2d(func, steps, ax,
-                        xlim, ylim, cmap="viridis", title=""):
+def plot_convergence_2d(func, steps, ax, xlim, ylim, cmap="viridis", title=""):
+
     ax.set_title(title, fontsize=20, fontweight="bold")
 
     xrange = np.linspace(*xlim, 100)
     yrange = np.linspace(*ylim, 100)
-
     grid = np.meshgrid(xrange, yrange)
-
     X, Y = grid
-    fvalues = func(np.dstack(grid).reshape(-1, 2)).reshape((xrange.size, yrange.size))
-
+    fvalues = func(
+        np.dstack(grid).reshape(-1, 2)
+    ).reshape((xrange.size, yrange.size))
     ax.pcolormesh(xrange, yrange, fvalues, cmap=cmap, alpha=0.8)
-    CS = ax.countour(xrange, yrange, fvalues)
+    CS = ax.contour(xrange, yrange, fvalues)
     ax.clabel(CS, CS.levels, inline=True)
 
     arrow_kwargs = dict(linestyle="--", color="black", alpha=0.8)
@@ -62,22 +61,22 @@ def plot_convergence_2d(func, steps, ax,
         if i + 1 < len(steps):
             ax.arrow(
                 *steps[i],
-                *(steps[i + 1] - steps[i]),
+                *(steps[i+1] - steps[i]),
                 **arrow_kwargs
             )
 
     n = len(steps)
     color_list = [(i / n, 0, 0, 1 - i / n) for i in range(n)]
     ax.scatter(steps[:, 0], steps[:, 1], c=color_list, zorder=10)
-    ax.scatter(steps[-1, 0], steps[-1, 1], color="red",
-               label=f"estimate = {np.round(steps[-1], 2)}")
+    ax.scatter(steps[-1, 0], steps[-1, 1],
+               color="red", label=f"estimate = {np.round(steps[-1], 2)}")
 
     ax.set_xlim(xlim)
     ax.set_ylim(ylim)
-
     ax.set_ylabel("$y$")
     ax.set_xlabel("$x$")
     ax.legend(fontsize=16)
+    plt.show()
 
 
 def test_convergence_2d(grad_descent_2d, test_cases, tol, axes=None):
