@@ -1,5 +1,9 @@
+from copy import deepcopy
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+from ForTesting import LoggingCallback
 
 
 def numerical_derivative_2d(func, epsilon):
@@ -75,5 +79,37 @@ def plot_convergence_2d(func, steps, ax,
     ax.set_xlabel("$x$")
     ax.legend(fontsize=16)
 
-def test_convergence_2d(grad_descent_2d, test_cases, tol, axes = None):
-    
+def test_convergence_2d(grad_descent_2d, test_cases, tol, axes=None):
+
+    right_flag = True
+    debug_log = []
+    for i, key in enumerate(test_cases.keys()):
+
+        answer = test_cases[key]["answer"]
+        test_input = deepcopy(test_cases[key])
+        del test_input["answer"]
+
+        callback = LoggingCallback()  # Не забываем про логирование
+        res_point = grad_descent_2d(**test_input, callback=callback)
+
+        if axes is not None:
+            ax = axes[np.unravel_index(i, shape=axes.shape)]
+            plot_convergence_2d(
+                np.vectorize(test_input["func"], signature="(n)->()"),
+                np.vstack(callback.x_steps),
+                ax=ax,
+                xlim=(test_input["low"], test_input["high"]),
+                ylim=(test_input["low"], test_input["high"]),
+                title=key
+            )
+
+        if np.linalg.norm(answer - res_point, ord=1) > tol:
+            debug_log.append(
+                f"Test '{key}':\n"
+                f"\t- answer: {answer}\n"
+                f"\t- counted: {res_point}"
+            )
+            right_flag = False
+    return right_flag, debug_log
+
+
