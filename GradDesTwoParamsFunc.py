@@ -61,3 +61,19 @@ def plot_convergence_2d(func, steps, ax,
                 *(steps[i + 1] - steps[i]),
                 **arrow_kwargs
             )
+
+    n = len(steps)
+    color_list = [(i / n, 0, 0, 1 - i / n) for i in range(n)]
+    ax.scatter(steps[:, 0], steps[:, 1], c=color_list, zorder=10)
+    ax.scatter(steps[-1, 0], steps[-1, 1], color="red",
+               label=f"estimate = {np.round(steps[-1], 2)}")
+
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+
+    ax.set_ylabel("$y$")
+    ax.set_xlabel("$x$")
+    ax.legend(fontsize=16)
+
+def test_convergence_2d(grad_descent_2d, test_cases, tol, axes = None):
+    
