@@ -79,8 +79,8 @@ def plot_convergence_2d(func, steps, ax,
     ax.set_xlabel("$x$")
     ax.legend(fontsize=16)
 
-def test_convergence_2d(grad_descent_2d, test_cases, tol, axes=None):
 
+def test_convergence_2d(grad_descent_2d, test_cases, tol, axes=None):
     right_flag = True
     debug_log = []
     for i, key in enumerate(test_cases.keys()):
@@ -113,3 +113,25 @@ def test_convergence_2d(grad_descent_2d, test_cases, tol, axes=None):
     return right_flag, debug_log
 
 
+test_cases = {
+    "concentric_circles": {
+        "func": lambda x: (
+                -1 / ((x[0] - 1) ** 2 + (x[1] - 1.5) ** 2 + 1)
+                * np.cos(2 * (x[0] - 1) ** 2 + 2 * (x[1] - 1.5) ** 2)
+        ),
+        "low": -5,
+        "high": 5,
+        "answer": np.array([1, 1.5])
+    }
+}
+tol = 1e-3
+
+fig, axes = plt.subplots(figsize=(10, 10), squeeze=False)
+fig.suptitle("Grad desc", fontsize = 25, fontweight = "bold")
+
+is_correct, debug_log = test_convergence_2d(grad_descent_2d, test_cases, tol, axes)
+
+if not is_correct:
+    print("Wrong")
+    for log_entry in debug_log:
+        print(log_entry)
